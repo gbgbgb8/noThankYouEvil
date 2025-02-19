@@ -252,6 +252,99 @@ function updatePreview() {
     updateCharacterSheet(false);
 }
 
+// Add item generation data
+const itemData = {
+    baseItems: {
+        astronaut: ['space helmet', 'gravity boots', 'star compass'],
+        creature: ['sharp claws', 'tough hide', 'natural camouflage'],
+        fighter: ['trusty sword', 'shield', 'practice dummy'],
+        kid: ['backpack', 'slingshot', 'lucky marble'],
+        pirate: ['cutlass', 'spyglass', 'treasure map'],
+        princess: ['royal scepter', 'crown', 'elegant cape'],
+        robot: ['built-in tools', 'power cell', 'scanning lens'],
+        spy: ['grappling hook', 'lockpicks', 'disguise kit'],
+        superhero: ['cape', 'mask', 'utility belt'],
+        wizard: ['magic wand', 'spellbook', 'crystal ball']
+    },
+    adjectiveItems: {
+        cool: ['sunglasses', 'leather jacket', 'skateboard'],
+        fantastic: ['glowing amulet', 'rainbow cape', 'magic mirror'],
+        fast: ['running shoes', 'energy drink', 'stopwatch'],
+        kind: ['healing potion', 'friendship bracelet', 'sharing basket'],
+        powerful: ['power gauntlets', 'energy crystal', 'strength belt'],
+        sneaky: ['smoke bombs', 'silent shoes', 'invisibility cloak'],
+        super_smart: ['calculator watch', 'puzzle cube', 'magnifying glass'],
+        super_strong: ['power armor', 'lifting gloves', 'mighty hammer']
+    },
+    companionItems: {
+        awesome_alien: ['space treats', 'translator device', 'hover disc'],
+        big_bad_wolf: ['wolf treats', 'tracking collar', 'howling horn'],
+        clumsy_ghost: ['ghost treats', 'spectral bell', 'haunted toy'],
+        dust_bunny: ['dust treats', 'tiny brush', 'fluff collector'],
+        fast_car: ['special fuel', 'repair kit', 'racing flag'],
+        fiery_dragon: ['dragon treats', 'flame-proof leash', 'cooling spray'],
+        flying_octopus: ['octopus treats', 'water bottle', 'tentacle polish'],
+        invisible_friend: ['special treats', 'friendship bracelet', 'magic bell'],
+        little_sibling: ['candy', 'toy share', 'piggyback harness'],
+        pretty_pony: ['pony treats', 'grooming brush', 'sparkly ribbons'],
+        robot_dog: ['battery treats', 'oil can', 'spare parts'],
+        scary_monster: ['monster treats', 'comfort blanket', 'night light'],
+        tiny_t_rex: ['dino treats', 'fossil brush', 'growth potion']
+    }
+};
+
+// Add function to generate character stuff
+function generateCharacterStuff(noun, adjective, companionType, background) {
+    let stuff = [];
+    
+    // Get base items for the character type
+    const baseItems = itemData.baseItems[noun] || ['adventuring supplies', 'basic weapon', 'travel gear'];
+    stuff.push(...baseItems);
+    
+    // Add items based on adjective
+    const adjectiveItems = itemData.adjectiveItems[adjective] || [];
+    if (adjectiveItems.length > 0) {
+        stuff.push(adjectiveItems[Math.floor(Math.random() * adjectiveItems.length)]);
+    }
+    
+    // Add companion-related item
+    const companionItems = itemData.companionItems[companionType] || [];
+    if (companionItems.length > 0) {
+        stuff.push(companionItems[0]); // Always add the treats for the companion
+    }
+    
+    // Add background-inspired item if background exists
+    if (background && background !== 'Click generate to create a background story...') {
+        // Extract keywords from background
+        const keywords = background.toLowerCase().match(/\b(magic|treasure|adventure|mystery|flying|water|forest|city|star|space|circus|laboratory)\b/g);
+        if (keywords) {
+            const backgroundItems = {
+                magic: ['enchanted trinket', 'glowing crystal', 'mystic charm'],
+                treasure: ['small chest', 'ancient coin', 'treasure map piece'],
+                adventure: ['compass', 'sturdy rope', 'travel journal'],
+                mystery: ['detective kit', 'secret notebook', 'mysterious key'],
+                flying: ['feather charm', 'wind whistle', 'cloud in a bottle'],
+                water: ['water flask', 'bubble maker', 'sea shell'],
+                forest: ['plant guide', 'wooden whistle', 'acorn collection'],
+                city: ['city map', 'metro pass', 'building blocks'],
+                star: ['star chart', 'wishing stone', 'moonlight lamp'],
+                space: ['mini rocket', 'space snacks', 'alien dictionary'],
+                circus: ['juggling balls', 'tiny tent', 'performer\'s hat'],
+                laboratory: ['test tubes', 'safety goggles', 'experiment kit']
+            };
+            
+            // Add a relevant item based on the background
+            const keyword = keywords[0];
+            if (backgroundItems[keyword]) {
+                const items = backgroundItems[keyword];
+                stuff.push(items[Math.floor(Math.random() * items.length)]);
+            }
+        }
+    }
+    
+    return stuff;
+}
+
 // Modified update character sheet to handle custom values
 function updateCharacterSheet(showNotification = false) {
     const name = form.name.value.trim() || 'Unnamed Character';
@@ -294,6 +387,20 @@ function updateCharacterSheet(showNotification = false) {
             updateDisplayField('display_companion', companionName);
             updateDisplayField('display_companion_type', companionType.replace(/_/g, ' '));
             updateDisplayField('display_cypher', companionAbility);
+
+            // Generate character stuff
+            const background = document.getElementById('display_background').textContent;
+            const characterStuff = generateCharacterStuff(noun, adjective, companionType, background);
+            
+            // Update the stuff display
+            const stuffList = document.querySelector('.inventory-box');
+            if (stuffList) {
+                stuffList.innerHTML = '<strong>Stuff:</strong><ul style="list-style-type: none; padding-left: 0;">';
+                characterStuff.forEach(item => {
+                    stuffList.innerHTML += `<li>• ${item}</li>`;
+                });
+                stuffList.innerHTML += '</ul><div class="notes-area" style="margin-top: 0.5rem; border-top: 1px dashed #000;">Additional Items:</div>';
+            }
 
             if (showNotification) {
                 Swal.fire({
