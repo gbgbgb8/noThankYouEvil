@@ -235,12 +235,77 @@ function printCharacterSheet() {
     window.print();
 }
 
-// Add print button
-const printButton = document.createElement('button');
-printButton.innerHTML = '<i class="fas fa-print"></i> Print Character Sheet';
-printButton.className = 'print-button';
-printButton.onclick = printCharacterSheet;
-document.querySelector('.sheet-container').appendChild(printButton);
+// Generate AI prompt based on character details
+function generateAIPrompt() {
+    const name = form.name.value.trim() || 'Unnamed Character';
+    const noun = form.noun.value;
+    const adjective = form.adjective.value;
+    const companionType = form.companionType.value;
+    const companionName = form.companionName.value.trim() || 'Unnamed Companion';
+
+    if (!noun || !adjective || !companionType) {
+        Swal.fire({
+            title: 'Incomplete Character',
+            text: 'Please fill in the character details first!',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        });
+        return null;
+    }
+
+    // Build a detailed prompt for AI image generation
+    const characterDescription = `${adjective.replace('_', ' ')} ${noun}`;
+    const companionDescription = companionType.replace('_', ' ');
+    
+    // Create a rich description based on the character type
+    let styleDetails = '';
+    if (noun === 'wizard') {
+        styleDetails = 'magical, mystical, with glowing magical effects';
+    } else if (noun === 'superhero') {
+        styleDetails = 'dynamic pose, heroic lighting, comic book style';
+    } else if (noun === 'robot') {
+        styleDetails = 'metallic textures, glowing elements, sci-fi style';
+    } else if (noun === 'pirate') {
+        styleDetails = 'swashbuckling adventure style, dramatic lighting';
+    } else if (noun === 'princess') {
+        styleDetails = 'royal attire, elegant pose, fantasy style';
+    } else if (noun === 'astronaut') {
+        styleDetails = 'space background, futuristic suit, sci-fi elements';
+    }
+
+    // Construct the prompt
+    const prompt = `A vibrant, detailed illustration of ${name}, a ${characterDescription}, accompanied by their companion ${companionName}, a ${companionDescription}. ${styleDetails}. Cute and child-friendly art style, suitable for a children's adventure game. Digital art, colorful, well-lit, playful atmosphere.`;
+
+    return prompt;
+}
+
+// Copy AI prompt to clipboard
+async function copyAIPrompt() {
+    const prompt = generateAIPrompt();
+    if (!prompt) return;
+
+    try {
+        await navigator.clipboard.writeText(prompt);
+        Swal.fire({
+            title: 'Copied!',
+            text: 'AI art prompt copied to clipboard',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+        });
+    } catch (err) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Failed to copy prompt to clipboard',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    }
+}
+
+// Set up button event listeners
+document.querySelector('.print-button').onclick = printCharacterSheet;
+document.querySelector('.ai-prompt-button').onclick = copyAIPrompt;
 
 // Initial call to set default display
 updateCharacterSheet();
