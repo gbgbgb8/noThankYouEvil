@@ -333,6 +333,7 @@ function generateAIPrompt() {
     const adjective = getFieldValue(form.adjective, form.customAdjective);
     const companionType = getFieldValue(form.companionType, form.customCompanionType);
     const companionName = form.companionName.value.trim() || 'Unnamed Companion';
+    const background = document.getElementById('display_background').textContent;
 
     if (!noun || !adjective || !companionType) {
         Swal.fire({
@@ -408,8 +409,13 @@ function generateAIPrompt() {
         companionStyle = `showing their unique characteristics as a ${companionDescription.toLowerCase()}`;
     }
 
+    // Include background story in the scene description
+    const backgroundContext = background && background !== 'Click generate to create a background story...' ?
+        `The scene reflects their background: ${background}` :
+        '';
+
     // Construct the prompt with all details
-    const prompt = `A vibrant, detailed illustration of ${name}, a ${characterDescription}, ${styleDetails}. They are accompanied by their faithful companion ${companionName}, a ${companionDescription} ${companionStyle}. Cute and child-friendly art style, suitable for a children's adventure game. Digital art, colorful, well-lit, playful atmosphere.`;
+    const prompt = `A vibrant, detailed illustration of ${name}, a ${characterDescription}, ${styleDetails}. They are accompanied by their faithful companion ${companionName}, a ${companionDescription} ${companionStyle}. ${backgroundContext} Cute and child-friendly art style, suitable for a children's adventure game. Digital art, colorful, well-lit, playful atmosphere.`;
 
     return prompt;
 }
