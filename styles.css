@@ -43,6 +43,39 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
+.input-group {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.select-container {
+    flex: 1;
+    min-width: 250px;
+}
+
+.custom-input {
+    flex: 1;
+    min-width: 250px;
+}
+
+.custom-input.visible {
+    display: block !important;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 label {
     display: inline-block;
     width: 150px;

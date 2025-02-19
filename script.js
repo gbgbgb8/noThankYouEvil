@@ -86,7 +86,10 @@ const form = {
     noun: document.getElementById('noun'),
     adjective: document.getElementById('adjective'),
     companionType: document.getElementById('companion_type'),
-    companionName: document.getElementById('companion_name')
+    companionName: document.getElementById('companion_name'),
+    customNoun: document.getElementById('custom_noun'),
+    customAdjective: document.getElementById('custom_adjective'),
+    customCompanionType: document.getElementById('custom_companion_type')
 };
 
 // Add image-related elements
@@ -131,7 +134,38 @@ imageElements.removeButton.addEventListener('click', function() {
     imageElements.input.value = '';
 });
 
-// Form validation
+// Handle custom input visibility
+function setupCustomInputs() {
+    const toggleCustomInput = (select, customInput) => {
+        const customContainer = customInput.parentElement;
+        if (select.value === 'custom') {
+            customContainer.style.display = 'block';
+            customContainer.classList.add('visible');
+            customInput.required = true;
+        } else {
+            customContainer.style.display = 'none';
+            customContainer.classList.remove('visible');
+            customInput.required = false;
+            customInput.value = '';
+        }
+    };
+
+    form.noun.addEventListener('change', () => toggleCustomInput(form.noun, form.customNoun));
+    form.adjective.addEventListener('change', () => toggleCustomInput(form.adjective, form.customAdjective));
+    form.companionType.addEventListener('change', () => toggleCustomInput(form.companionType, form.customCompanionType));
+}
+
+setupCustomInputs();
+
+// Get actual value (custom or selected)
+function getFieldValue(selectElement, customElement) {
+    if (selectElement.value === 'custom') {
+        return customElement.value.trim();
+    }
+    return selectElement.value;
+}
+
+// Modified validate form to handle custom inputs
 function validateForm() {
     let isValid = true;
     const errors = [];
@@ -144,28 +178,43 @@ function validateForm() {
         form.name.classList.remove('error');
     }
 
-    if (!form.noun.value) {
+    const nounValue = getFieldValue(form.noun, form.customNoun);
+    if (!nounValue) {
         isValid = false;
-        errors.push('Please select a noun');
+        errors.push('Please select or enter a noun');
         form.noun.classList.add('error');
+        if (form.noun.value === 'custom') {
+            form.customNoun.classList.add('error');
+        }
     } else {
         form.noun.classList.remove('error');
+        form.customNoun.classList.remove('error');
     }
 
-    if (!form.adjective.value) {
+    const adjectiveValue = getFieldValue(form.adjective, form.customAdjective);
+    if (!adjectiveValue) {
         isValid = false;
-        errors.push('Please select an adjective');
+        errors.push('Please select or enter an adjective');
         form.adjective.classList.add('error');
+        if (form.adjective.value === 'custom') {
+            form.customAdjective.classList.add('error');
+        }
     } else {
         form.adjective.classList.remove('error');
+        form.customAdjective.classList.remove('error');
     }
 
-    if (!form.companionType.value) {
+    const companionTypeValue = getFieldValue(form.companionType, form.customCompanionType);
+    if (!companionTypeValue) {
         isValid = false;
-        errors.push('Please select a companion type');
+        errors.push('Please select or enter a companion type');
         form.companionType.classList.add('error');
+        if (form.companionType.value === 'custom') {
+            form.customCompanionType.classList.add('error');
+        }
     } else {
         form.companionType.classList.remove('error');
+        form.customCompanionType.classList.remove('error');
     }
 
     if (!form.companionName.value.trim()) {
@@ -203,12 +252,12 @@ function updatePreview() {
     updateCharacterSheet(false);
 }
 
-// Enhanced character sheet update function
+// Modified update character sheet to handle custom values
 function updateCharacterSheet(showNotification = false) {
     const name = form.name.value.trim() || 'Unnamed Character';
-    const noun = form.noun.value;
-    const adjective = form.adjective.value;
-    const companionType = form.companionType.value;
+    const noun = getFieldValue(form.noun, form.customNoun);
+    const adjective = getFieldValue(form.adjective, form.customAdjective);
+    const companionType = getFieldValue(form.companionType, form.customCompanionType);
     const companionName = form.companionName.value.trim() || 'Unnamed Companion';
 
     // Show loading state
@@ -217,25 +266,35 @@ function updateCharacterSheet(showNotification = false) {
     // Simulate a brief loading delay for better UX
     setTimeout(() => {
         if (noun && adjective && companionType) {
-            // Calculate pools
-            const basePools = { ...nouns[noun].pools };
-            const bonusPool = adjectives[adjective].pool;
-            basePools[bonusPool] += adjectives[adjective].bonus;
+            // Handle custom values for pools and abilities
+            const characterPools = nouns[noun]?.pools || {
+                tough: 1,
+                fast: 1,
+                smart: 1,
+                awesome: 1
+            };
+
+            const adjectiveBonus = adjectives[adjective] || {
+                pool: 'awesome',
+                bonus: 1
+            };
+
+            const companionAbility = companions[companionType]?.cypher || 
+                `Special Ability: Your companion has unique powers that help you on your adventures.`;
 
             // Update display with animations
             updateDisplayField('display_name', name);
             updateDisplayField('display_type', `${adjective.replace('_', ' ')} ${noun}`);
-            updateDisplayField('display_tough', basePools.tough);
-            updateDisplayField('display_fast', basePools.fast);
-            updateDisplayField('display_smart', basePools.smart);
-            updateDisplayField('display_awesome', basePools.awesome);
-            updateDisplayField('display_defense', nouns[noun].defense);
-            updateDisplayField('display_knack', nouns[noun].knack);
+            updateDisplayField('display_tough', characterPools.tough);
+            updateDisplayField('display_fast', characterPools.fast);
+            updateDisplayField('display_smart', characterPools.smart);
+            updateDisplayField('display_awesome', characterPools.awesome);
+            updateDisplayField('display_defense', nouns[noun]?.defense || 'Uses their unique abilities to defend');
+            updateDisplayField('display_knack', nouns[noun]?.knack || 'Has special talents waiting to be discovered');
             updateDisplayField('display_companion', companionName);
-            updateDisplayField('display_companion_type', companionType.replace('_', ' '));
-            updateDisplayField('display_cypher', companions[companionType].cypher);
+            updateDisplayField('display_companion_type', companionType.replace(/_/g, ' '));
+            updateDisplayField('display_cypher', companionAbility);
 
-            // Show success message only on form submission
             if (showNotification) {
                 Swal.fire({
                     title: 'Character Saved!',
@@ -401,13 +460,54 @@ const characterTraits = {
     }
 };
 
-// Generate character background
+// Add more variety to background generation
+const additionalBackgroundData = {
+    personalities: [
+        'always looking for new mysteries to solve',
+        'loves making new friends wherever they go',
+        'believes in the power of teamwork',
+        'never gives up, no matter the challenge',
+        'sees the magic in everyday things',
+        'always ready for the next big adventure'
+    ],
+    origins: [
+        'discovered in a rainbow after a storm',
+        'emerged from a magical storybook',
+        'arrived through a portal of dreams',
+        'found in a garden of glowing flowers',
+        'born during a meteor shower',
+        'raised by friendly forest creatures'
+    ],
+    quirks: [
+        'can make plants grow by singing to them',
+        'their hair changes color with their mood',
+        'leaves tiny footprints of stardust',
+        'can understand cloud shapes as messages',
+        'their laughter makes flowers bloom',
+        'creates tiny illusions when excited'
+    ],
+    dreams: [
+        'wants to paint the biggest rainbow ever seen',
+        'hopes to teach dragons how to dance',
+        'dreams of building bridges between worlds',
+        'seeks to collect stories from the stars',
+        'wishes to make everyone\'s dreams come true',
+        'plans to discover new kinds of magic'
+    ]
+};
+
+// Merge additional data with existing data
+Object.keys(backgroundData).forEach(key => {
+    backgroundData[key] = [...backgroundData[key], ...additionalBackgroundData[key]];
+});
+
+// Modified generate character background to handle custom types
 function generateCharacterBackground(forceNewSeed = false) {
     const name = form.name.value.trim() || 'Unnamed Character';
-    const noun = form.noun.value;
-    const adjective = form.adjective.value;
+    const noun = getFieldValue(form.noun, form.customNoun);
+    const adjective = getFieldValue(form.adjective, form.customAdjective);
     const companionName = form.companionName.value.trim() || 'Unnamed Companion';
-    const companionType = form.companionType.value;
+    const companionType = getFieldValue(form.companionType, form.customCompanionType);
 
     if (!noun || !adjective || !companionType) {
         Swal.fire({
@@ -424,8 +524,18 @@ function generateCharacterBackground(forceNewSeed = false) {
     const rng = new Math.seedrandom(seed);
     const random = (arr) => arr[Math.floor(rng() * arr.length)];
 
-    // Get character-specific traits if they exist
-    const specificTraits = characterTraits[noun] || {};
+    // Get character-specific traits if they exist, or generate generic ones
+    const specificTraits = characterTraits[noun] || {
+        personalities: [
+            `${adjective.toLowerCase()} and mysterious`,
+            `uniquely ${adjective.toLowerCase()}`
+        ],
+        quirks: [
+            `has special ${noun.toLowerCase()}-like abilities`,
+            `shows their ${adjective.toLowerCase()} nature in unexpected ways`
+        ]
+    };
+
     const personalityPool = [...backgroundData.personalities, ...(specificTraits.personalities || [])];
     const quirkPool = [...backgroundData.quirks, ...(specificTraits.quirks || [])];
 

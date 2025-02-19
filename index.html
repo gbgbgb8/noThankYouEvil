@@ -28,54 +28,75 @@
                 <label for="name">Character Name:</label>
                 <input type="text" id="name" name="name" placeholder="Enter name">
             </div>
-            <div>
-                <label for="noun">Noun:</label>
-                <select id="noun" name="noun">
-                    <option value="" selected disabled>Select a noun</option>
-                    <option value="astronaut">Astronaut</option>
-                    <option value="creature">Creature</option>
-                    <option value="fighter">Fighter</option>
-                    <option value="kid">Kid</option>
-                    <option value="pirate">Pirate</option>
-                    <option value="princess">Princess</option>
-                    <option value="robot">Robot</option>
-                    <option value="spy">Spy</option>
-                    <option value="superhero">Superhero</option>
-                    <option value="wizard">Wizard</option>
-                </select>
+            <div class="input-group">
+                <div class="select-container">
+                    <label for="noun">Noun:</label>
+                    <select id="noun" name="noun">
+                        <option value="" selected disabled>Select a noun</option>
+                        <option value="astronaut">Astronaut</option>
+                        <option value="creature">Creature</option>
+                        <option value="fighter">Fighter</option>
+                        <option value="kid">Kid</option>
+                        <option value="pirate">Pirate</option>
+                        <option value="princess">Princess</option>
+                        <option value="robot">Robot</option>
+                        <option value="spy">Spy</option>
+                        <option value="superhero">Superhero</option>
+                        <option value="wizard">Wizard</option>
+                        <option value="custom">Custom...</option>
+                    </select>
+                </div>
+                <div class="custom-input" style="display: none;">
+                    <label for="custom_noun">Custom Noun:</label>
+                    <input type="text" id="custom_noun" name="custom_noun" placeholder="Enter custom noun">
+                </div>
             </div>
-            <div>
-                <label for="adjective">Adjective:</label>
-                <select id="adjective" name="adjective">
-                    <option value="" selected disabled>Select an adjective</option>
-                    <option value="cool">Cool</option>
-                    <option value="fantastic">Fantastic</option>
-                    <option value="fast">Fast</option>
-                    <option value="kind">Kind</option>
-                    <option value="powerful">Powerful</option>
-                    <option value="sneaky">Sneaky</option>
-                    <option value="super_smart">Super Smart</option>
-                    <option value="super_strong">Super Strong</option>
-                </select>
+            <div class="input-group">
+                <div class="select-container">
+                    <label for="adjective">Adjective:</label>
+                    <select id="adjective" name="adjective">
+                        <option value="" selected disabled>Select an adjective</option>
+                        <option value="cool">Cool</option>
+                        <option value="fantastic">Fantastic</option>
+                        <option value="fast">Fast</option>
+                        <option value="kind">Kind</option>
+                        <option value="powerful">Powerful</option>
+                        <option value="sneaky">Sneaky</option>
+                        <option value="super_smart">Super Smart</option>
+                        <option value="super_strong">Super Strong</option>
+                        <option value="custom">Custom...</option>
+                    </select>
+                </div>
+                <div class="custom-input" style="display: none;">
+                    <label for="custom_adjective">Custom Adjective:</label>
+                    <input type="text" id="custom_adjective" name="custom_adjective" placeholder="Enter custom adjective">
+                </div>
             </div>
-            <div>
-                <label for="companion_type">Companion Type:</label>
-                <select id="companion_type" name="companion_type">
-                    <option value="" selected disabled>Select a companion</option>
-                    <option value="awesome_alien">Awesome Alien</option>
-                    <option value="big_bad_wolf">Big Bad Wolf</option>
-                    <option value="clumsy_ghost">Clumsy Ghost</option>
-                    <option value="dust_bunny">Dust Bunny</option>
-                    <option value="fast_car">Fast Car</option>
-                    <option value="fiery_dragon">Fiery Dragon</option>
-                    <option value="flying_octopus">Flying Octopus</option>
-                    <option value="invisible_friend">Invisible Friend</option>
-                    <option value="little_sibling">Little Sibling</option>
-                    <option value="pretty_pony">Pretty Pony</option>
-                    <option value="robot_dog">Robot Dog</option>
-                    <option value="scary_monster">Scary Monster</option>
-                    <option value="tiny_t_rex">Tiny T. Rex</option>
-                </select>
+            <div class="input-group">
+                <div class="select-container">
+                    <label for="companion_type">Companion Type:</label>
+                    <select id="companion_type" name="companion_type">
+                        <option value="" selected disabled>Select a companion</option>
+                        <option value="awesome_alien">Awesome Alien</option>
+                        <option value="big_bad_wolf">Big Bad Wolf</option>
+                        <option value="clumsy_ghost">Clumsy Ghost</option>
+                        <option value="dust_bunny">Dust Bunny</option>
+                        <option value="fast_car">Fast Car</option>
+                        <option value="fiery_dragon">Fiery Dragon</option>
+                        <option value="flying_octopus">Flying Octopus</option>
+                        <option value="invisible_friend">Invisible Friend</option>
+                        <option value="little_sibling">Little Sibling</option>
+                        <option value="pretty_pony">Pretty Pony</option>
+                        <option value="robot_dog">Robot Dog</option>
+                        <option value="scary_monster">Scary Monster</option>
+                        <option value="tiny_t_rex">Tiny T. Rex</option>
+                        <option value="custom">Custom...</option>
+                    </select>
+                </div>
+                <div class="custom-input" style="display: none;">
+                    <label for="custom_companion_type">Custom Companion:</label>
+                    <input type="text" id="custom_companion_type" name="custom_companion_type" placeholder="Enter custom companion type">
+                </div>
             </div>
             <div>
                 <label for="companion_name">Companion Name:</label>
