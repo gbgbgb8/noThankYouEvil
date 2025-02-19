@@ -94,6 +94,7 @@
         <h2>Character Sheet</h2>
         <p><strong>Name:</strong> <span id="display_name"></span></p>
         <p><strong>Type:</strong> <span id="display_type"></span></p>
+        <p><strong>Background:</strong> <span id="display_background">Click generate to create a background story...</span></p>
         <p><strong>Pools:</strong></p>
         <ul>
             <li>Tough: <span id="display_tough">0</span></li>
@@ -115,9 +116,20 @@
             <button class="action-button ai-prompt-button">
                 <i class="fas fa-magic"></i> Copy AI Art Prompt
             </button>
+            <div class="generate-buttons">
+                <button class="action-button generate-button">
+                    <i class="fas fa-book"></i> Generate Background
+                </button>
+                <button class="action-button regenerate-button" disabled>
+                    <i class="fas fa-sync-alt"></i> Regenerate
+                </button>
+            </div>
         </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://unpkg.com/compromise"></script>
+    <script src="https://cdn.jsdelivr.net/npm/seedrandom@3.0.5/seedrandom.min.js"></script>
     <script src="script.js"></script>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

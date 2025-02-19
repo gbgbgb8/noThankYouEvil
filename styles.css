@@ -195,6 +195,7 @@ select:focus, input[type="text"]:focus {
     justify-content: center;
     margin-top: 2rem;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .action-button {
@@ -239,4 +240,44 @@ select:focus, input[type="text"]:focus {
 
 .ai-prompt-button:hover {
     background-color: #d68910;
+}
+
+.generate-button {
+    background-color: #2ecc71;  /* A nice green color */
+}
+
+.generate-button:hover {
+    background-color: #27ae60;
+}
+
+#display_background {
+    font-style: italic;
+    line-height: 1.6;
+    display: block;
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: var(--background-color);
+    border-radius: 6px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.generate-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.5rem;
+}
+
+.regenerate-button {
+    background-color: #9b59b6;  /* A nice purple color */
+}
+
+.regenerate-button:hover {
+    background-color: #8e44ad;
+}
+
+.regenerate-button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
 }

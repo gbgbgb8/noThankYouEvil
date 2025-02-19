@@ -303,9 +303,129 @@ async function copyAIPrompt() {
     }
 }
 
+// Character generation data
+const backgroundData = {
+    personalities: [
+        'brave and adventurous',
+        'curious and clever',
+        'kind and helpful',
+        'mischievous but lovable',
+        'creative and imaginative',
+        'determined and resourceful'
+    ],
+    origins: [
+        'from a magical floating city',
+        'raised in a secret laboratory',
+        'born in a mystical forest',
+        'from a family of famous adventurers',
+        'discovered in a shooting star',
+        'grew up in a traveling circus'
+    ],
+    quirks: [
+        'always carries a lucky charm that glows in the dark',
+        'can speak to friendly woodland creatures',
+        'loves collecting unusual shiny objects',
+        'tells jokes that make flowers giggle',
+        'leaves a trail of sparkles when excited',
+        'can make tiny rainbows appear'
+    ],
+    dreams: [
+        'dreams of discovering all the world\'s mysteries',
+        'hopes to make friends with every magical creature',
+        'wants to build the most amazing inventions',
+        'wishes to help others find their own adventures',
+        'seeks to collect stories from every corner of the realm',
+        'aims to become the greatest hero in the land'
+    ]
+};
+
+// Add character-specific traits
+const characterTraits = {
+    wizard: {
+        personalities: ['mystical and wise', 'eccentric but brilliant'],
+        quirks: ['makes their wand do silly dances', 'turns accidents into butterflies']
+    },
+    superhero: {
+        personalities: ['bold and courageous', 'humble yet powerful'],
+        quirks: ['cape always flows in nonexistent wind', 'strikes heroic poses randomly']
+    },
+    robot: {
+        personalities: ['logical yet caring', 'curious about human emotions'],
+        quirks: ['beeps happily when pleased', 'processes feelings with colorful lights']
+    },
+    pirate: {
+        personalities: ['swashbuckling and daring', 'treasure-hunting but generous'],
+        quirks: ['has a map for everything', 'speaks in sea shanties']
+    },
+    princess: {
+        personalities: ['graceful and diplomatic', 'adventurous despite royal duties'],
+        quirks: ['crown doubles as a toolkit', 'teaches etiquette to dragons']
+    },
+    astronaut: {
+        personalities: ['space-savvy and brave', 'scientific yet whimsical'],
+        quirks: ['collects stardust in jars', 'names every asteroid they see']
+    }
+};
+
+// Generate character background
+function generateCharacterBackground(forceNewSeed = false) {
+    const name = form.name.value.trim() || 'Unnamed Character';
+    const noun = form.noun.value;
+    const adjective = form.adjective.value;
+    const companionName = form.companionName.value.trim() || 'Unnamed Companion';
+    const companionType = form.companionType.value;
+
+    if (!noun || !adjective || !companionType) {
+        Swal.fire({
+            title: 'Incomplete Character',
+            text: 'Please fill in the character details first!',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+
+    // Create a random seed for each generation
+    const seed = forceNewSeed ? Math.random().toString() : (name + noun + adjective + companionName);
+    const rng = new Math.seedrandom(seed);
+    const random = (arr) => arr[Math.floor(rng() * arr.length)];
+
+    // Get character-specific traits if they exist
+    const specificTraits = characterTraits[noun] || {};
+    const personalityPool = [...backgroundData.personalities, ...(specificTraits.personalities || [])];
+    const quirkPool = [...backgroundData.quirks, ...(specificTraits.quirks || [])];
+
+    // Generate the background story
+    const personality = random(personalityPool);
+    const origin = random(backgroundData.origins);
+    const quirk = random(quirkPool);
+    const dream = random(backgroundData.dreams);
+
+    const companionDesc = companionType.replace(/_/g, ' ');
+    
+    const story = `${name} is ${personality}, ${origin}. Together with their faithful companion ${companionName}, a ${companionDesc} who ${quirk}, they ${dream}.`;
+
+    // Update the display with animation
+    updateDisplayField('display_background', story);
+
+    // Enable the regenerate button after first generation
+    document.querySelector('.regenerate-button').disabled = false;
+
+    // Show success notification
+    Swal.fire({
+        title: forceNewSeed ? 'Background Regenerated!' : 'Background Generated!',
+        text: 'A new chapter in your character\'s story has been written.',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+    });
+}
+
 // Set up button event listeners
 document.querySelector('.print-button').onclick = printCharacterSheet;
 document.querySelector('.ai-prompt-button').onclick = copyAIPrompt;
+document.querySelector('.generate-button').onclick = () => generateCharacterBackground(false);
+document.querySelector('.regenerate-button').onclick = () => generateCharacterBackground(true);
 
 // Initial call to set default display
 updateCharacterSheet();
