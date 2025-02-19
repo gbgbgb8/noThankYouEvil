@@ -79,42 +79,158 @@ const companions = {
     tiny_t_rex: { cypher: 'Embiggen: Your companion suddenly grows to full T. Rex size and stomps on a bad guy or object, doing 3 points of damage.' }
 };
 
-// Event listeners for dynamic updates
-document.getElementById('noun').addEventListener('change', updateCharacterSheet);
-document.getElementById('adjective').addEventListener('change', updateCharacterSheet);
-document.getElementById('companion_type').addEventListener('change', updateCharacterSheet);
-document.getElementById('name').addEventListener('input', updateCharacterSheet);
-document.getElementById('companion_name').addEventListener('input', updateCharacterSheet);
+// DOM Elements
+const form = {
+    name: document.getElementById('name'),
+    noun: document.getElementById('noun'),
+    adjective: document.getElementById('adjective'),
+    companionType: document.getElementById('companion_type'),
+    companionName: document.getElementById('companion_name')
+};
 
-// Function to update the character sheet
-function updateCharacterSheet() {
-    const name = document.getElementById('name').value || 'Unnamed Character';
-    const noun = document.getElementById('noun').value;
-    const adjective = document.getElementById('adjective').value;
-    const companionType = document.getElementById('companion_type').value;
-    const companionName = document.getElementById('companion_name').value || 'Unnamed Companion';
+// Event listeners for dynamic updates with validation
+Object.values(form).forEach(element => {
+    if (element.tagName === 'INPUT') {
+        element.addEventListener('input', validateAndUpdate);
+    } else {
+        element.addEventListener('change', validateAndUpdate);
+    }
+});
 
-    // Only update if required selections are made
-    if (noun && adjective && companionType) {
-        // Calculate pools
-        const basePools = { ...nouns[noun].pools };
-        const bonusPool = adjectives[adjective].pool;
-        basePools[bonusPool] += adjectives[adjective].bonus;
+// Form validation
+function validateForm() {
+    let isValid = true;
+    const errors = [];
 
-        // Update display
-        document.getElementById('display_name').textContent = name;
-        document.getElementById('display_type').textContent = `${adjective.replace('_', ' ')} ${noun}`;
-        document.getElementById('display_tough').textContent = basePools.tough;
-        document.getElementById('display_fast').textContent = basePools.fast;
-        document.getElementById('display_smart').textContent = basePools.smart;
-        document.getElementById('display_awesome').textContent = basePools.awesome;
-        document.getElementById('display_defense').textContent = nouns[noun].defense;
-        document.getElementById('display_knack').textContent = nouns[noun].knack;
-        document.getElementById('display_companion').textContent = companionName;
-        document.getElementById('display_companion_type').textContent = companionType.replace('_', ' ');
-        document.getElementById('display_cypher').textContent = companions[companionType].cypher;
+    if (!form.name.value.trim()) {
+        isValid = false;
+        errors.push('Character name is required');
+        form.name.classList.add('error');
+    } else {
+        form.name.classList.remove('error');
+    }
+
+    if (!form.noun.value) {
+        isValid = false;
+        errors.push('Please select a noun');
+        form.noun.classList.add('error');
+    } else {
+        form.noun.classList.remove('error');
+    }
+
+    if (!form.adjective.value) {
+        isValid = false;
+        errors.push('Please select an adjective');
+        form.adjective.classList.add('error');
+    } else {
+        form.adjective.classList.remove('error');
+    }
+
+    if (!form.companionType.value) {
+        isValid = false;
+        errors.push('Please select a companion type');
+        form.companionType.classList.add('error');
+    } else {
+        form.companionType.classList.remove('error');
+    }
+
+    if (!form.companionName.value.trim()) {
+        isValid = false;
+        errors.push('Companion name is required');
+        form.companionName.classList.add('error');
+    } else {
+        form.companionName.classList.remove('error');
+    }
+
+    return { isValid, errors };
+}
+
+// Function to validate and update the character sheet
+function validateAndUpdate() {
+    const { isValid, errors } = validateForm();
+    
+    if (isValid) {
+        updateCharacterSheet();
+        document.querySelector('.sheet-container').classList.add('animate-fade-in');
+    } else {
+        // Show errors using SweetAlert2
+        Swal.fire({
+            title: 'Please fix the following:',
+            html: errors.join('<br>'),
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        });
     }
 }
+
+// Enhanced character sheet update function
+function updateCharacterSheet() {
+    const name = form.name.value.trim() || 'Unnamed Character';
+    const noun = form.noun.value;
+    const adjective = form.adjective.value;
+    const companionType = form.companionType.value;
+    const companionName = form.companionName.value.trim() || 'Unnamed Companion';
+
+    // Show loading state
+    document.querySelector('.sheet-container').classList.add('loading');
+
+    // Simulate a brief loading delay for better UX
+    setTimeout(() => {
+        if (noun && adjective && companionType) {
+            // Calculate pools
+            const basePools = { ...nouns[noun].pools };
+            const bonusPool = adjectives[adjective].pool;
+            basePools[bonusPool] += adjectives[adjective].bonus;
+
+            // Update display with animations
+            updateDisplayField('display_name', name);
+            updateDisplayField('display_type', `${adjective.replace('_', ' ')} ${noun}`);
+            updateDisplayField('display_tough', basePools.tough);
+            updateDisplayField('display_fast', basePools.fast);
+            updateDisplayField('display_smart', basePools.smart);
+            updateDisplayField('display_awesome', basePools.awesome);
+            updateDisplayField('display_defense', nouns[noun].defense);
+            updateDisplayField('display_knack', nouns[noun].knack);
+            updateDisplayField('display_companion', companionName);
+            updateDisplayField('display_companion_type', companionType.replace('_', ' '));
+            updateDisplayField('display_cypher', companions[companionType].cypher);
+
+            // Show success message
+            Swal.fire({
+                title: 'Character Updated!',
+                text: `${name} is ready for adventure!`,
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+
+        // Remove loading state
+        document.querySelector('.sheet-container').classList.remove('loading');
+    }, 300);
+}
+
+// Helper function to update display fields with animation
+function updateDisplayField(elementId, value) {
+    const element = document.getElementById(elementId);
+    if (element.textContent !== value.toString()) {
+        element.classList.add('animate-fade-in');
+        element.textContent = value;
+        setTimeout(() => element.classList.remove('animate-fade-in'), 500);
+    }
+}
+
+// Print character sheet
+function printCharacterSheet() {
+    window.print();
+}
+
+// Add print button
+const printButton = document.createElement('button');
+printButton.innerHTML = '<i class="fas fa-print"></i> Print Character Sheet';
+printButton.className = 'print-button';
+printButton.onclick = printCharacterSheet;
+document.querySelector('.sheet-container').appendChild(printButton);
 
 // Initial call to set default display
 updateCharacterSheet();
