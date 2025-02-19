@@ -730,3 +730,113 @@ document.querySelector('.regenerate-button').onclick = () => generateCharacterBa
 
 // Initial call to set default display
 updateCharacterSheet();
+
+// Add randomization data
+const randomData = {
+    namePatterns: [
+        ['Sparkly', 'Bouncy', 'Zippy', 'Swishy', 'Glowy', 'Twinkly', 'Swooshy', 'Fluffy', 'Bubbly', 'Whizzy'],
+        ['Star', 'Moon', 'Cloud', 'Light', 'Heart', 'Dream', 'Song', 'Dance', 'Wish', 'Joy'],
+        ['Hopper', 'Whisper', 'Giggler', 'Twirler', 'Jumper', 'Sparkler', 'Dreamer', 'Dancer', 'Singer', 'Wonder']
+    ],
+    companionNamePatterns: [
+        ['Sir', 'Lady', 'Captain', 'Professor', 'Doctor', 'Agent', 'Princess', 'Prince', 'Master', 'Chief'],
+        ['Wiggles', 'Bubbles', 'Sparkles', 'Giggles', 'Twinkles', 'Wobbles', 'Flutters', 'Bounces', 'Whispers', 'Dazzles']
+    ],
+    favoriteThings: [
+        'rainbow sprinkles on everything',
+        'collecting shiny pebbles',
+        'making up silly songs',
+        'giving high-fives to trees',
+        'drawing pictures in the clouds',
+        'telling jokes to flowers',
+        'dancing with butterflies',
+        'building pillow fortresses',
+        'naming stars after friends',
+        'inventing new games'
+    ],
+    secretTalents: [
+        'can speak backwards fluently',
+        'knows how to juggle soap bubbles',
+        'can make their shadow do funny dances',
+        'understands what rainbows are thinking',
+        'can whisper to shooting stars',
+        'knows the secret handshake of the moon',
+        'can make cookies appear by snapping fingers',
+        'knows how to fold origami in the dark',
+        'can make plants grow by singing lullabies',
+        'can teach fish to do backflips'
+    ],
+    luckyColors: [
+        'sparkly rainbow',
+        'shimmering gold',
+        'twinkling silver',
+        'glowing purple',
+        'magical blue',
+        'radiant green',
+        'dazzling pink',
+        'gleaming orange',
+        'glittering red',
+        'shining yellow'
+    ]
+};
+
+// Add function to generate random character
+function generateRandomCharacter() {
+    // Helper function to get random array element
+    const randomFrom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    
+    // Generate random name
+    const name = randomData.namePatterns.map(part => randomFrom(part)).join(' ');
+    
+    // Select random noun and adjective
+    const nounOptions = Object.keys(nouns);
+    const adjectiveOptions = Object.keys(adjectives);
+    const noun = randomFrom(nounOptions);
+    const adjective = randomFrom(adjectiveOptions);
+    
+    // Select random companion type and generate name
+    const companionOptions = Object.keys(companions);
+    const companionType = randomFrom(companionOptions);
+    const companionName = randomData.companionNamePatterns.map(part => randomFrom(part)).join(' ');
+    
+    // Generate extra fun attributes
+    const favoriteThing = randomFrom(randomData.favoriteThings);
+    const secretTalent = randomFrom(randomData.secretTalents);
+    const luckyColor = randomFrom(randomData.luckyColors);
+    
+    // Update form values
+    form.name.value = name;
+    form.noun.value = noun;
+    form.adjective.value = adjective;
+    form.companionType.value = companionType;
+    form.companionName.value = companionName;
+    
+    // Store extra attributes in data attributes
+    const sheetContainer = document.querySelector('.sheet-container');
+    sheetContainer.dataset.favoriteThing = favoriteThing;
+    sheetContainer.dataset.secretTalent = secretTalent;
+    sheetContainer.dataset.luckyColor = luckyColor;
+    
+    // Update character sheet
+    updateCharacterSheet(true);
+    
+    // Generate background with the new attributes
+    generateCharacterBackground(true);
+    
+    // Show fun attributes notification
+    Swal.fire({
+        title: 'Random Character Created!',
+        html: `
+            <div style="text-align: left; margin-top: 1rem;">
+                <p><strong>Favorite Thing:</strong> ${favoriteThing}</p>
+                <p><strong>Secret Talent:</strong> ${secretTalent}</p>
+                <p><strong>Lucky Color:</strong> ${luckyColor}</p>
+            </div>
+        `,
+        icon: 'success',
+        confirmButtonText: 'Let\'s Adventure!'
+    });
+}
+
+// Add randomize button event listener after other button listeners
+document.querySelector('.randomize-button').onclick = generateRandomCharacter;

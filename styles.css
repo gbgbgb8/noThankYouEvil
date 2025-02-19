@@ -301,9 +301,12 @@ select:focus, input[type="text"]:focus {
 .button-container {
     text-align: center;
     margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
 }
 
-.submit-button {
+.submit-button, .randomize-button {
     background-color: var(--primary-color);
     color: white;
     padding: 0.75rem 1.5rem;
@@ -318,18 +321,33 @@ select:focus, input[type="text"]:focus {
     gap: 0.5rem;
 }
 
-.submit-button:hover {
-    background-color: #357abd;
+.submit-button:hover, .randomize-button:hover {
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.submit-button:active {
+.submit-button:active, .randomize-button:active {
     transform: translateY(0);
 }
 
-.submit-button i {
+.submit-button i, .randomize-button i {
     font-size: 1.1rem;
+}
+
+.submit-button {
+    background-color: var(--primary-color);
+}
+
+.randomize-button {
+    background-color: var(--secondary-color);
+}
+
+.submit-button:hover {
+    background-color: #357abd;
+}
+
+.randomize-button:hover {
+    background-color: #d68910;
 }
 
 .button-group {
