@@ -532,7 +532,7 @@ select:focus, input[type="text"]:focus {
 }
 
 .action-button {
-    background-color: var(--primary-color);
+    background: linear-gradient(to bottom right, var(--primary-color), var(--primary-dark));
     color: white;
     padding: 0.75rem 1.5rem;
     border: none;
@@ -540,19 +540,20 @@ select:focus, input[type="text"]:focus {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-normal);
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
 }
 
 .action-button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: var(--hover-lift);
+    filter: brightness(110%);
 }
 
 .action-button:active {
-    transform: translateY(0);
+    transform: translateY(1px);
+    filter: brightness(90%);
 }
 
 .action-button i {
@@ -560,48 +561,22 @@ select:focus, input[type="text"]:focus {
 }
 
 .print-button {
-    background-color: var(--primary-color);
-}
-
-.print-button:hover {
-    background-color: #357abd;
+    background: linear-gradient(to bottom right, var(--primary-color), var(--primary-dark));
 }
 
 .ai-prompt-button {
-    background-color: var(--secondary-color);
-}
-
-.ai-prompt-button:hover {
-    background-color: #d68910;
-}
-
-.generate-button {
-    background-color: #2ecc71;  /* A nice green color */
-}
-
-.generate-button:hover {
-    background-color: #27ae60;
-}
-
-.generate-buttons {
-    display: flex;
-    gap: 0.5rem;
-    margin: 0.5rem;
+    background: linear-gradient(to bottom right, var(--secondary-color), var(--secondary-dark));
 }
 
 .regenerate-button {
-    background-color: #9b59b6;  /* A nice purple color */
-}
-
-.regenerate-button:hover {
-    background-color: #8e44ad;
+    background: linear-gradient(to bottom right, var(--success-color), var(--success-dark));
 }
 
 .regenerate-button:disabled {
-    background-color: #bdc3c7;
+    background: linear-gradient(to bottom right, var(--text-muted), var(--border-color));
     cursor: not-allowed;
     transform: none !important;
-    box-shadow: none !important;
+    filter: none !important;
 }
 
 .character-header {

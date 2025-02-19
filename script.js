@@ -752,8 +752,20 @@ function generateCharacterBackground(forceNewSeed = false) {
 // Set up button event listeners
 document.querySelector('.print-button').onclick = printCharacterSheet;
 document.querySelector('.ai-prompt-button').onclick = copyAIPrompt;
-document.querySelector('.generate-button').onclick = () => generateCharacterBackground(false);
-document.querySelector('.regenerate-button').onclick = () => generateCharacterBackground(true);
+document.querySelector('.regenerate-button').onclick = () => {
+    if (!form.name.value.trim() || !getFieldValue(form.noun, form.customNoun) || 
+        !getFieldValue(form.adjective, form.customAdjective) || 
+        !getFieldValue(form.companionType, form.customCompanionType)) {
+        Swal.fire({
+            title: 'Incomplete Character',
+            text: 'Please fill in the character details first!',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+    generateCharacterBackground(true);
+};
 
 // Initial call to set default display
 updateCharacterSheet();
