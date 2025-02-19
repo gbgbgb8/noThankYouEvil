@@ -744,3 +744,70 @@ select:focus, input[type="text"]:focus {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-dark);
 }
+
+/* Gender selection styles */
+.gender-select {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.gender-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.gender-option input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.gender-option input[type="radio"]:checked {
+    border-color: var(--primary-color);
+    background: radial-gradient(
+        var(--primary-color) 40%,
+        transparent 50%
+    );
+}
+
+.gender-option input[type="radio"]:hover {
+    border-color: var(--primary-color);
+}
+
+.gender-option span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* Adjust the name input container */
+.name-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.name-input {
+    flex: 1;
+}
+
+/* Adjust companion name container */
+.companion-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.companion-input {
+    flex: 1;
+}

@@ -658,13 +658,31 @@ Object.keys(backgroundData).forEach(key => {
     backgroundData[key] = [...backgroundData[key], ...additionalBackgroundData[key]];
 });
 
-// Modified generate character background to handle custom types
-function generateCharacterBackground(forceNewSeed = false) {
-    const name = form.name.value.trim() || 'Unnamed Character';
+// Get form values with gender
+function getFormValues() {
+    const name = form.name.value.trim();
+    const characterGender = document.querySelector('input[name="character_gender"]:checked').value;
     const noun = getFieldValue(form.noun, form.customNoun);
     const adjective = getFieldValue(form.adjective, form.customAdjective);
-    const companionName = form.companionName.value.trim() || 'Unnamed Companion';
     const companionType = getFieldValue(form.companionType, form.customCompanionType);
+    const companionName = form.companionName.value.trim();
+    const companionGender = document.querySelector('input[name="companion_gender"]:checked').value;
+
+    return {
+        name,
+        characterGender,
+        noun,
+        adjective,
+        companionType,
+        companionName,
+        companionGender
+    };
+}
+
+// Modified generate character background to include gender
+function generateCharacterBackground(forceNewSeed = false) {
+    const values = getFormValues();
+    const { name, characterGender, noun, adjective, companionName, companionType, companionGender } = values;
 
     if (!noun || !adjective || !companionType) {
         Swal.fire({
@@ -675,6 +693,15 @@ function generateCharacterBackground(forceNewSeed = false) {
         });
         return;
     }
+
+    // Create pronouns based on gender
+    const characterPronouns = characterGender === 'boy' ? 
+        { subject: 'he', object: 'him', possessive: 'his' } : 
+        { subject: 'she', object: 'her', possessive: 'her' };
+    
+    const companionPronouns = companionGender === 'boy' ? 
+        { subject: 'he', object: 'him', possessive: 'his' } : 
+        { subject: 'she', object: 'her', possessive: 'her' };
 
     // Create a random seed for each generation
     const seed = forceNewSeed ? Math.random().toString() : (name + noun + adjective + companionName);
@@ -689,14 +716,14 @@ function generateCharacterBackground(forceNewSeed = false) {
         ],
         quirks: [
             `has special ${noun.toLowerCase()}-like abilities`,
-            `shows their ${adjective.toLowerCase()} nature in unexpected ways`
+            `shows ${characterPronouns.possessive} ${adjective.toLowerCase()} nature in unexpected ways`
         ]
     };
 
     const personalityPool = [...backgroundData.personalities, ...(specificTraits.personalities || [])];
     const quirkPool = [...backgroundData.quirks, ...(specificTraits.quirks || [])];
 
-    // Generate the background story
+    // Generate the background story with proper pronouns
     const personality = random(personalityPool);
     const origin = random(backgroundData.origins);
     const quirk = random(quirkPool);
@@ -704,7 +731,7 @@ function generateCharacterBackground(forceNewSeed = false) {
 
     const companionDesc = companionType.replace(/_/g, ' ');
     
-    const story = `${name} is ${personality}, ${origin}. Together with their faithful companion ${companionName}, a ${companionDesc} who ${quirk}, they ${dream}.`;
+    const story = `${name} is ${personality}, ${origin}. Together with ${characterPronouns.possessive} faithful companion ${companionName}, a ${companionDesc} who ${quirk}, ${characterPronouns.subject} ${dream}.`;
 
     // Update the display with animation
     updateDisplayField('display_background', story);
@@ -780,10 +807,14 @@ const randomData = {
     ]
 };
 
-// Add function to generate random character
+// Modified generate random character to include gender
 function generateRandomCharacter() {
     // Helper function to get random array element
     const randomFrom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    
+    // Randomly select gender for character and companion
+    const characterGender = Math.random() < 0.5 ? 'boy' : 'girl';
+    const companionGender = Math.random() < 0.5 ? 'boy' : 'girl';
     
     // Generate random name
     const name = randomData.namePatterns.map(part => randomFrom(part)).join(' ');
@@ -810,6 +841,10 @@ function generateRandomCharacter() {
     form.adjective.value = adjective;
     form.companionType.value = companionType;
     form.companionName.value = companionName;
+    
+    // Update gender selections
+    document.querySelector(`input[name="character_gender"][value="${characterGender}"]`).checked = true;
+    document.querySelector(`input[name="companion_gender"][value="${companionGender}"]`).checked = true;
     
     // Store extra attributes in data attributes
     const sheetContainer = document.querySelector('.sheet-container');

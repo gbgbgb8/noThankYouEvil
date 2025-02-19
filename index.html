@@ -24,9 +24,21 @@
     <!-- Input Form -->
     <div class="form-container">
         <form id="character-form">
-            <div>
-                <label for="name">Character Name:</label>
-                <input type="text" id="name" name="name" placeholder="Enter name">
+            <div class="name-container">
+                <div class="name-input">
+                    <label for="name">Character Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter name">
+                </div>
+                <div class="gender-select">
+                    <label class="gender-option">
+                        <input type="radio" name="character_gender" value="boy" checked>
+                        <span>Boy</span>
+                    </label>
+                    <label class="gender-option">
+                        <input type="radio" name="character_gender" value="girl">
+                        <span>Girl</span>
+                    </label>
+                </div>
             </div>
             <div class="input-group">
                 <div class="select-container">
@@ -98,9 +110,21 @@
                     <input type="text" id="custom_companion_type" name="custom_companion_type" placeholder="Enter custom companion type">
                 </div>
             </div>
-            <div>
-                <label for="companion_name">Companion Name:</label>
-                <input type="text" id="companion_name" name="companion_name" placeholder="Enter companion name">
+            <div class="companion-container">
+                <div class="companion-input">
+                    <label for="companion_name">Companion Name:</label>
+                    <input type="text" id="companion_name" name="companion_name" placeholder="Enter companion name">
+                </div>
+                <div class="gender-select">
+                    <label class="gender-option">
+                        <input type="radio" name="companion_gender" value="boy" checked>
+                        <span>Boy</span>
+                    </label>
+                    <label class="gender-option">
+                        <input type="radio" name="companion_gender" value="girl">
+                        <span>Girl</span>
+                    </label>
+                </div>
             </div>
             <div class="button-container">
                 <button type="submit" class="submit-button">
