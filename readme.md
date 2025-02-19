@@ -2,97 +2,139 @@
 
 ## Introduction
 
-Welcome to the **No Thank You, Evil! Character Sheet Generator**! This web-based tool allows players to easily create character sheets for the tabletop roleplaying game (TTRPG) *No Thank You, Evil!*. Based on the game's Quick Players' Guide, this generator simplifies character creation by offering dropdown selectors for character types (nouns), personality traits (adjectives), and companions, alongside text inputs for names. The character sheet updates dynamically as you make selections, providing an instant preview of your character's abilities, defense, knack, and companion details.
-
-Whether you're a new player or a seasoned adventurer, this generator makes it fun and fast to bring your *No Thank You, Evil!* characters to life.
-
----
-
-## How to Use
-
-1. **Access the Generator**:  
-   - If hosted online, visit the provided URL.  
-   - For local use, download the project files and open `index.html` in your web browser.
-
-2. **Input Character Details**:  
-   - **Character Name**: Type your character's name into the text field.  
-   - **Noun**: Choose a noun from the dropdown (e.g., Astronaut, Pirate, Wizard) to define your character's type. This sets base ability pools, defense type, and knack.  
-   - **Adjective**: Pick an adjective (e.g., Cool, Fast, Kind) to reflect your character's personality. This adds a +1 bonus to one ability pool.  
-   - **Companion Type**: Select a companion from the dropdown (e.g., Awesome Alien, Fiery Dragon). Each comes with a unique cypher (a one-time ability).  
-   - **Companion Name**: Enter a name for your companion.
-
-3. **View Your Character Sheet**:  
-   - The character sheet updates instantly below the input form, showing your character's name, type, ability pools (Tough, Fast, Smart, Awesome), defense, knack, companion details, stuff, and coins.
-
-4. **Experiment**:  
-   - Try different noun and adjective combinations to tweak your character's abilities.  
-   - Use your companion’s cypher wisely in your game!
-
----
+Welcome to the **No Thank You, Evil! Character Sheet Generator**! This web-based tool allows players to easily create character sheets for the tabletop roleplaying game (TTRPG) *No Thank You, Evil!*. With a mix of classic character creation and magical whimsy, this generator helps bring your imaginative characters to life with just a few clicks.
 
 ## Features
 
-- **Dynamic Updates**:  
-  The character sheet refreshes in real-time as you choose your noun, adjective, and companion, reflecting how your selections shape your character.
+### Core Character Creation
+- **Dynamic Character Building**: Create characters using nouns (type), adjectives (traits), and companions
+- **Custom Types**: Enter your own character types, traits, and companion types beyond the preset options
+- **Automatic Stat Calculation**: Stats automatically adjust based on character choices
+- **Live Preview**: See your character sheet update in real-time as you make choices
 
-- **Ability Pool Calculation**:  
-  Each noun provides base values for Tough, Fast, Smart, and Awesome. Your chosen adjective boosts one of these by +1, tailoring your character's strengths.
+### Enhanced Character Generation
+- **Random Character Generator**: Create complete characters instantly with the click of a button
+- **Whimsical Name Generation**: Generates fun, thematic names like "Sparkly Moon Dancer" or "Twinkly Dream Wonder"
+- **Companion Name Generator**: Creates charming companion names like "Captain Bubbles" or "Lady Sparkles"
+- **Extra Character Attributes**:
+  - Favorite Things (e.g., "collecting shiny pebbles", "giving high-fives to trees")
+  - Secret Talents (e.g., "can whisper to shooting stars", "knows how to juggle soap bubbles")
+  - Lucky Colors (e.g., "sparkly rainbow", "shimmering gold")
 
-- **Defense and Knack**:  
-  Your noun determines your defense type (Armor or Hustle) and a unique knack (special ability), both displayed automatically on the sheet.
+### Smart Background Generation
+- **Dynamic Background Stories**: Automatically generates character backgrounds
+- **Character-Specific Traits**: Special traits and quirks based on character type
+- **Companion Integration**: Weaves companion characters into the story
+- **Regeneration Option**: Generate new backgrounds while keeping character stats
 
-- **Companion Details**:  
-  Select a companion type to see its name, type, and cypher added to your sheet, enhancing your character's story and strategy.
+### Intelligent Inventory System
+- **Character-Appropriate Items**: Equipment based on character type
+- **Trait-Based Items**: Special items matching character traits
+- **Companion Gear**: Companion-specific items and treats
+- **Background-Inspired Items**: Additional items based on character background
 
-- **Simple Interface**:  
-  Dropdowns and text fields make the tool easy to use for players of all ages and skill levels.
+### AI Art Integration
+- **Smart Prompt Generation**: Creates detailed AI art prompts based on character details
+- **Background Integration**: Includes background story elements in art description
+- **Style Matching**: Adjusts art style description based on character type
+- **Image Management**: Upload and display character art on the sheet
 
----
+### Print-Ready Design
+- **Clean Layout**: Optimized for both screen and print
+- **Tracking Boxes**: Easy-to-use boxes for tracking stats during play
+- **Space for Notes**: Dedicated areas for additional items and notes
+- **Print-Specific Styling**: Special formatting for printed sheets
+
+## How to Use
+
+1. **Create Your Character**:
+   - Enter a name or use the randomize button
+   - Choose or create a character type (noun)
+   - Select or enter a trait (adjective)
+   - Pick or customize a companion type
+   - Name your companion or let the generator suggest one
+
+2. **Generate & Customize**:
+   - Click "Save Character" to generate stats
+   - Use "Generate Background" for a character story
+   - Click "Regenerate" for different background options
+   - Add or modify items in the inventory section
+
+3. **Add Character Art**:
+   - Click "Copy AI Art Prompt" to get a detailed prompt
+   - Use the prompt in your favorite AI art tool
+   - Upload the generated art to your character sheet
+
+4. **Print & Play**:
+   - Click "Print Character Sheet" for a game-ready version
+   - Use the tracking boxes during gameplay
+   - Add notes and items as your adventure progresses
 
 ## Future Enhancements
 
-Here are some exciting ideas we’re planning to add to the generator:
+### 1. Adventure Generator
+- **What It Does**: Creates mini-adventures tailored to your character
+- **Features**:
+  - Generates quest hooks based on character traits
+  - Creates location descriptions matching the character's background
+  - Suggests challenges that play to character strengths
+  - Includes companion-specific story moments
 
-### 1. Copy Button for AI Image Generation Prompts
-- **What It Does**: Creates a descriptive prompt based on your character (e.g., "A fast pirate named Jack with a fiery dragon companion named Ember").  
-- **Why It’s Cool**: Copy the prompt with one click and use it in AI image tools like Grok, DALL-E, or Midjourney to generate custom character art.  
-- **How It Works**: Click the button, and the prompt is copied to your clipboard, ready to paste into your preferred AI platform.
+### 2. Character Evolution System
+- **What It Does**: Helps track and evolve characters over multiple sessions
+- **Features**:
+  - Achievement tracking
+  - New ability unlocks
+  - Companion growth mechanics
+  - Story milestone recording
 
-### 2. In-Browser Attribute Generation with Transformers.js
-- **What It Does**: Uses [transformers.js](https://huggingface.co/docs/transformers.js/index) to generate extra character details—like backstories, quirks, or traits—right in your browser.  
-- **Why It’s Cool**: Adds depth to your character without external tools, and it’s private since everything runs locally.  
-- **How It Works**: Select this feature, and the tool will use lightweight AI models to suggest unique additions to your character sheet.
+### 3. Interactive Character Sheet
+- **What It Does**: Makes the character sheet come alive during play
+- **Features**:
+  - Animated stat tracking
+  - Digital dice rolling
+  - Sound effects for abilities
+  - Interactive companion reactions
 
-### 3. Random Character Sheet Generator
-- **What It Does**: A button that auto-selects a noun, adjective, companion type, and generates names for both character and companion.  
-- **Why It’s Cool**: Perfect for quick inspiration or instant characters for spontaneous game sessions.  
-- **How It Works**: Click the button, and a fully random character sheet appears, ready to play or tweak.
+### 4. Story Memory System
+- **What It Does**: Remembers and builds upon your adventures
+- **Features**:
+  - Adventure journal
+  - Character relationships tracking
+  - Achievement gallery
+  - Favorite moment snapshots
 
----
+### 5. Multi-Character Party View
+- **What It Does**: Helps manage group adventures
+- **Features**:
+  - Party overview display
+  - Group inventory management
+  - Team ability combinations
+  - Party relationship tracking
 
 ## Technical Details
 
-- **Files**:  
-  - `index.html`: The generator’s structure.  
-  - `styles.css`: Styling for a clean, user-friendly look.  
-  - `script.js`: Logic for dynamic sheet updates.
+- **Built With**: HTML5, CSS3, JavaScript
+- **Dependencies**: 
+  - Font Awesome (icons)
+  - SweetAlert2 (notifications)
+  - Seedrandom (consistent random generation)
+  - Compromise (text processing)
 
-- **Local Setup**:  
-  1. Download or clone the project.  
-  2. Keep `index.html`, `styles.css`, and `script.js` in the same folder.  
-  3. Open `index.html` in a browser.
+## Contributing
 
-- **Contributing**:  
-  This is an open-source project! Fork the repository and submit pull requests to help with features like those above. Check the repository for guidelines.
-
----
-
-## Acknowledgments
-
-This tool is inspired by the *No Thank You, Evil!* Quick Players' Guide from Monte Cook Games. Thanks to them for crafting a TTRPG that sparks imagination and joy for players young and old.
-
----
+This is an open-source project! We welcome contributions, especially for:
+- New character types and traits
+- Additional companion types
+- More background story elements
+- Enhanced item generation
+- UI/UX improvements
+- New feature implementations
 
 ## License
 
 Licensed under the [MIT License](LICENSE). Feel free to use, modify, and share this project freely.
+
+## Acknowledgments
+
+This tool is inspired by the *No Thank You, Evil!* Quick Players' Guide from Monte Cook Games. Thanks to them for creating such an imaginative and accessible TTRPG that brings joy to players of all ages.
