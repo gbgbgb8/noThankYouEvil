@@ -329,9 +329,9 @@ function printCharacterSheet() {
 // Generate AI prompt based on character details
 function generateAIPrompt() {
     const name = form.name.value.trim() || 'Unnamed Character';
-    const noun = form.noun.value;
-    const adjective = form.adjective.value;
-    const companionType = form.companionType.value;
+    const noun = getFieldValue(form.noun, form.customNoun);
+    const adjective = getFieldValue(form.adjective, form.customAdjective);
+    const companionType = getFieldValue(form.companionType, form.customCompanionType);
     const companionName = form.companionName.value.trim() || 'Unnamed Companion';
 
     if (!noun || !adjective || !companionType) {
@@ -345,27 +345,71 @@ function generateAIPrompt() {
     }
 
     // Build a detailed prompt for AI image generation
-    const characterDescription = `${adjective.replace('_', ' ')} ${noun}`;
-    const companionDescription = companionType.replace('_', ' ');
+    const characterDescription = `${adjective.replace(/_/g, ' ')} ${noun}`;
+    const companionDescription = companionType.replace(/_/g, ' ');
     
     // Create a rich description based on the character type
     let styleDetails = '';
-    if (noun === 'wizard') {
-        styleDetails = 'magical, mystical, with glowing magical effects';
-    } else if (noun === 'superhero') {
-        styleDetails = 'dynamic pose, heroic lighting, comic book style';
-    } else if (noun === 'robot') {
-        styleDetails = 'metallic textures, glowing elements, sci-fi style';
-    } else if (noun === 'pirate') {
-        styleDetails = 'swashbuckling adventure style, dramatic lighting';
-    } else if (noun === 'princess') {
-        styleDetails = 'royal attire, elegant pose, fantasy style';
-    } else if (noun === 'astronaut') {
-        styleDetails = 'space background, futuristic suit, sci-fi elements';
+    
+    // Check predefined types first
+    if (nouns[noun]) {
+        if (noun === 'wizard') {
+            styleDetails = 'magical, mystical, with glowing magical effects';
+        } else if (noun === 'superhero') {
+            styleDetails = 'dynamic pose, heroic lighting, comic book style';
+        } else if (noun === 'robot') {
+            styleDetails = 'metallic textures, glowing elements, sci-fi style';
+        } else if (noun === 'pirate') {
+            styleDetails = 'swashbuckling adventure style, dramatic lighting';
+        } else if (noun === 'princess') {
+            styleDetails = 'royal attire, elegant pose, fantasy style';
+        } else if (noun === 'astronaut') {
+            styleDetails = 'space background, futuristic suit, sci-fi elements';
+        }
+    } else {
+        // Generate style details based on adjective and noun combination
+        const moodWords = {
+            cool: 'relaxed and confident',
+            fantastic: 'magical and extraordinary',
+            fast: 'dynamic and energetic',
+            kind: 'warm and welcoming',
+            powerful: 'strong and impressive',
+            sneaky: 'mysterious and clever',
+            super_smart: 'intelligent and focused',
+            super_strong: 'mighty and heroic'
+        };
+
+        // Get mood from adjective or generate one for custom adjectives
+        const mood = adjectives[adjective] ? 
+            moodWords[adjective] : 
+            `${adjective.toLowerCase()} and distinctive`;
+
+        // Create style details for custom character types
+        styleDetails = `${mood} pose, with details that highlight their unique ${noun.toLowerCase()} nature`;
     }
 
-    // Construct the prompt
-    const prompt = `A vibrant, detailed illustration of ${name}, a ${characterDescription}, accompanied by their companion ${companionName}, a ${companionDescription}. ${styleDetails}. Cute and child-friendly art style, suitable for a children's adventure game. Digital art, colorful, well-lit, playful atmosphere.`;
+    // Add companion-specific details
+    let companionStyle = '';
+    if (companions[companionType]) {
+        // Use predefined companion descriptions
+        if (companionType.includes('dragon')) {
+            companionStyle = 'with scales that shimmer and magical energy swirling around them';
+        } else if (companionType.includes('ghost')) {
+            companionStyle = 'semi-transparent and glowing with a gentle, friendly aura';
+        } else if (companionType.includes('robot')) {
+            companionStyle = 'with shiny metal parts and blinking lights';
+        } else if (companionType.includes('monster')) {
+            companionStyle = 'looking fierce but friendly, with a big heart';
+        } else if (companionType.includes('alien')) {
+            companionStyle = 'with unique otherworldly features that seem both exotic and endearing';
+        }
+    } else {
+        // Generate companion style for custom types
+        companionStyle = `showing their unique characteristics as a ${companionDescription.toLowerCase()}`;
+    }
+
+    // Construct the prompt with all details
+    const prompt = `A vibrant, detailed illustration of ${name}, a ${characterDescription}, ${styleDetails}. They are accompanied by their faithful companion ${companionName}, a ${companionDescription} ${companionStyle}. Cute and child-friendly art style, suitable for a children's adventure game. Digital art, colorful, well-lit, playful atmosphere.`;
 
     return prompt;
 }
