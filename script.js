@@ -81,6 +81,7 @@ const companions = {
 
 // DOM Elements
 const form = {
+    element: document.getElementById('character-form'),
     name: document.getElementById('name'),
     noun: document.getElementById('noun'),
     adjective: document.getElementById('adjective'),
@@ -88,14 +89,16 @@ const form = {
     companionName: document.getElementById('companion_name')
 };
 
-// Event listeners for dynamic updates with validation
+// Event listeners for live preview updates
 Object.values(form).forEach(element => {
-    if (element.tagName === 'INPUT') {
-        element.addEventListener('input', validateAndUpdate);
-    } else {
-        element.addEventListener('change', validateAndUpdate);
+    if (element !== form.element && (element.tagName === 'INPUT' || element.tagName === 'SELECT')) {
+        element.addEventListener('input', updatePreview);
+        element.addEventListener('change', updatePreview);
     }
 });
+
+// Form submission handler
+form.element.addEventListener('submit', handleSubmit);
 
 // Form validation
 function validateForm() {
@@ -145,13 +148,13 @@ function validateForm() {
     return { isValid, errors };
 }
 
-// Function to validate and update the character sheet
-function validateAndUpdate() {
+// Handle form submission
+function handleSubmit(event) {
+    event.preventDefault();
     const { isValid, errors } = validateForm();
     
     if (isValid) {
-        updateCharacterSheet();
-        document.querySelector('.sheet-container').classList.add('animate-fade-in');
+        updateCharacterSheet(true);
     } else {
         // Show errors using SweetAlert2
         Swal.fire({
@@ -163,8 +166,13 @@ function validateAndUpdate() {
     }
 }
 
+// Live preview update function (no validation)
+function updatePreview() {
+    updateCharacterSheet(false);
+}
+
 // Enhanced character sheet update function
-function updateCharacterSheet() {
+function updateCharacterSheet(showNotification = false) {
     const name = form.name.value.trim() || 'Unnamed Character';
     const noun = form.noun.value;
     const adjective = form.adjective.value;
@@ -195,14 +203,16 @@ function updateCharacterSheet() {
             updateDisplayField('display_companion_type', companionType.replace('_', ' '));
             updateDisplayField('display_cypher', companions[companionType].cypher);
 
-            // Show success message
-            Swal.fire({
-                title: 'Character Updated!',
-                text: `${name} is ready for adventure!`,
-                icon: 'success',
-                timer: 1500,
-                showConfirmButton: false
-            });
+            // Show success message only on form submission
+            if (showNotification) {
+                Swal.fire({
+                    title: 'Character Saved!',
+                    text: `${name} is ready for adventure!`,
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
         }
 
         // Remove loading state

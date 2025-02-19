@@ -154,3 +154,37 @@ select:focus, input[type="text"]:focus {
 .error {
     border-color: #e74c3c !important;
 }
+
+.button-container {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.submit-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.submit-button:hover {
+    background-color: #357abd;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:active {
+    transform: translateY(0);
+}
+
+.submit-button i {
+    font-size: 1.1rem;
+}
