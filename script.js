@@ -89,6 +89,15 @@ const form = {
     companionName: document.getElementById('companion_name')
 };
 
+// Add image-related elements
+const imageElements = {
+    container: document.querySelector('.character-image-container'),
+    input: document.getElementById('character-image'),
+    preview: document.querySelector('.image-preview'),
+    img: document.getElementById('character-art'),
+    removeButton: document.querySelector('.remove-image-button')
+};
+
 // Event listeners for live preview updates
 Object.values(form).forEach(element => {
     if (element !== form.element && (element.tagName === 'INPUT' || element.tagName === 'SELECT')) {
@@ -99,6 +108,28 @@ Object.values(form).forEach(element => {
 
 // Form submission handler
 form.element.addEventListener('submit', handleSubmit);
+
+// Handle image upload
+imageElements.input.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imageElements.img.src = e.target.result;
+            imageElements.preview.style.display = 'block';
+            imageElements.input.parentElement.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Handle image removal
+imageElements.removeButton.addEventListener('click', function() {
+    imageElements.img.src = '';
+    imageElements.preview.style.display = 'none';
+    imageElements.input.parentElement.style.display = 'block';
+    imageElements.input.value = '';
+});
 
 // Form validation
 function validateForm() {
@@ -148,15 +179,16 @@ function validateForm() {
     return { isValid, errors };
 }
 
-// Handle form submission
+// Modified handle submit to include background generation
 function handleSubmit(event) {
     event.preventDefault();
     const { isValid, errors } = validateForm();
     
     if (isValid) {
         updateCharacterSheet(true);
+        // Generate background automatically on save
+        generateCharacterBackground(false);
     } else {
-        // Show errors using SweetAlert2
         Swal.fire({
             title: 'Please fix the following:',
             html: errors.join('<br>'),
@@ -279,18 +311,20 @@ function generateAIPrompt() {
     return prompt;
 }
 
-// Copy AI prompt to clipboard
+// Modified copyAIPrompt to show image upload area
 async function copyAIPrompt() {
     const prompt = generateAIPrompt();
     if (!prompt) return;
 
     try {
         await navigator.clipboard.writeText(prompt);
+        // Show the image upload area
+        imageElements.container.style.display = 'block';
         Swal.fire({
             title: 'Copied!',
-            text: 'AI art prompt copied to clipboard',
+            text: 'AI art prompt copied to clipboard. Once you generate your art, you can upload it to your character sheet!',
             icon: 'success',
-            timer: 1500,
+            timer: 3000,
             showConfirmButton: false
         });
     } catch (err) {

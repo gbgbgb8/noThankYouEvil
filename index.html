@@ -91,9 +91,29 @@
 
     <!-- Character Sheet Display -->
     <div class="sheet-container">
-        <h2>Character Sheet</h2>
-        <p><strong>Name:</strong> <span id="display_name"></span></p>
-        <p><strong>Type:</strong> <span id="display_type"></span></p>
+        <div class="character-header">
+            <div class="character-info">
+                <h2>Character Sheet</h2>
+                <p><strong>Name:</strong> <span id="display_name"></span></p>
+                <p><strong>Type:</strong> <span id="display_type"></span></p>
+            </div>
+            <div class="character-image-container" style="display: none;">
+                <div class="image-upload">
+                    <label for="character-image" class="upload-label">
+                        <i class="fas fa-upload"></i>
+                        <span>Upload Character Art</span>
+                    </label>
+                    <input type="file" id="character-image" accept="image/*" style="display: none;">
+                </div>
+                <div class="image-preview" style="display: none;">
+                    <img id="character-art" src="" alt="Character Art">
+                    <button class="remove-image-button">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
         <p><strong>Background:</strong> <span id="display_background">Click generate to create a background story...</span></p>
         <p><strong>Pools:</strong></p>
         <ul>
