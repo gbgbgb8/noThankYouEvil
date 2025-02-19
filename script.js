@@ -527,8 +527,24 @@ function generateAIPrompt() {
         `The scene reflects their shared adventure: ${background}` :
         '';
 
-    // Construct the prompt with all details including gender context
-    const prompt = `A vibrant, detailed illustration of ${name}, a ${characterDescription} (${characterGender}), ${styleDetails}. ${characterPronouns.subject.charAt(0).toUpperCase() + characterPronouns.subject.slice(1)} is accompanied by ${characterPronouns.possessive} faithful companion ${companionName}, a ${companionDescription} (${companionGender}) ${companionStyle}. ${backgroundContext} Cute and child-friendly art style, suitable for a children's adventure game. Digital art, colorful, well-lit, playful atmosphere.`;
+    // Get favorite thing, secret talent, and lucky color if they exist
+    const sheetContainer = document.querySelector('.sheet-container');
+    const favoriteThing = sheetContainer.dataset.favoriteThing ? 
+        `Their favorite thing is ${sheetContainer.dataset.favoriteThing}.` : '';
+    const secretTalent = sheetContainer.dataset.secretTalent ? 
+        `They have a secret talent: ${sheetContainer.dataset.secretTalent}.` : '';
+    const luckyColor = sheetContainer.dataset.luckyColor ? 
+        `Their lucky color is ${sheetContainer.dataset.luckyColor}.` : '';
+
+    // Add extra character details if they exist
+    const extraDetails = [favoriteThing, secretTalent, luckyColor]
+        .filter(detail => detail)
+        .join(' ');
+    
+    const extraDetailsContext = extraDetails ? `Character details: ${extraDetails} ` : '';
+
+    // Construct the prompt with all details including gender context and starting instruction
+    const prompt = `Draw a vibrant, detailed illustration of ${name}, a ${characterDescription} (${characterGender}), ${styleDetails}. ${characterPronouns.subject.charAt(0).toUpperCase() + characterPronouns.subject.slice(1)} is accompanied by ${characterPronouns.possessive} faithful companion ${companionName}, a ${companionDescription} (${companionGender}) ${companionStyle}. ${backgroundContext} ${extraDetailsContext}Make the art style cute and child-friendly, suitable for a children's adventure game. Digital art, colorful, well-lit, playful atmosphere.`;
 
     return prompt;
 }
