@@ -135,20 +135,88 @@
             </div>
         </div>
         
-        <p><strong>Background:</strong> <span id="display_background">Click generate to create a background story...</span></p>
-        <p><strong>Pools:</strong></p>
-        <ul>
-            <li>Tough: <span id="display_tough">0</span></li>
-            <li>Fast: <span id="display_fast">0</span></li>
-            <li>Smart: <span id="display_smart">0</span></li>
-            <li>Awesome: <span id="display_awesome">0</span></li>
-        </ul>
-        <p><strong>Defense:</strong> <span id="display_defense"></span></p>
-        <p><strong>Knack:</strong> <span id="display_knack"></span></p>
-        <p><strong>Companion:</strong> <span id="display_companion"></span>, a <span id="display_companion_type"></span></p>
-        <p><strong>Cypher:</strong> <span id="display_cypher"></span></p>
-        <p><strong>Stuff:</strong> Basic adventuring supplies and a weapon appropriate to their type.</p>
-        <p><strong>Coins:</strong> 0</p>
+        <div class="pool-container">
+            <div class="pool-box">
+                <div class="pool-value">Tough: <span id="display_tough">0</span></div>
+                <div class="pool-tracker">
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                </div>
+            </div>
+            <div class="pool-box">
+                <div class="pool-value">Fast: <span id="display_fast">0</span></div>
+                <div class="pool-tracker">
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                </div>
+            </div>
+            <div class="pool-box">
+                <div class="pool-value">Smart: <span id="display_smart">0</span></div>
+                <div class="pool-tracker">
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                </div>
+            </div>
+            <div class="pool-box">
+                <div class="pool-value">Awesome: <span id="display_awesome">0</span></div>
+                <div class="pool-tracker">
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                    <div class="tracker-box"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="abilities-section">
+            <div class="ability-box">
+                <strong>Defense:</strong> <span id="display_defense"></span>
+            </div>
+            <div class="ability-box">
+                <strong>Knack:</strong> <span id="display_knack"></span>
+            </div>
+        </div>
+
+        <div class="companion-section">
+            <p><strong>Companion:</strong> <span id="display_companion"></span>, a <span id="display_companion_type"></span></p>
+            <p><strong>Cypher:</strong> <span id="display_cypher"></span></p>
+        </div>
+
+        <div class="background-section">
+            <strong>Background:</strong> <span id="display_background">Click generate to create a background story...</span>
+        </div>
+
+        <div class="inventory-section">
+            <div class="inventory-box">
+                <strong>Stuff:</strong>
+                <p>Basic adventuring supplies and a weapon appropriate to their type.</p>
+                <div class="notes-area" style="margin-top: 0.5rem; border-top: 1px dashed #000;">
+                    Additional Items:
+                </div>
+            </div>
+            <div class="inventory-box">
+                <strong>Notes:</strong>
+            </div>
+        </div>
+
+        <div class="coins-section">
+            <strong>Coins:</strong>
+            <div class="coin-box"></div>
+            <div class="coin-box"></div>
+            <div class="coin-box"></div>
+            <div class="coin-box"></div>
+            <div class="coin-box"></div>
+        </div>
         
         <div class="button-group">
             <button class="action-button print-button">
