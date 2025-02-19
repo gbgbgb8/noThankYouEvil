@@ -435,11 +435,8 @@ function printCharacterSheet() {
 
 // Generate AI prompt based on character details
 function generateAIPrompt() {
-    const name = form.name.value.trim() || 'Unnamed Character';
-    const noun = getFieldValue(form.noun, form.customNoun);
-    const adjective = getFieldValue(form.adjective, form.customAdjective);
-    const companionType = getFieldValue(form.companionType, form.customCompanionType);
-    const companionName = form.companionName.value.trim() || 'Unnamed Companion';
+    const values = getFormValues();
+    const { name, characterGender, noun, adjective, companionType, companionName, companionGender } = values;
     const background = document.getElementById('display_background').textContent;
 
     if (!noun || !adjective || !companionType) {
@@ -452,6 +449,15 @@ function generateAIPrompt() {
         return null;
     }
 
+    // Create pronouns based on gender
+    const characterPronouns = characterGender === 'boy' ? 
+        { subject: 'he', object: 'him', possessive: 'his' } : 
+        { subject: 'she', object: 'her', possessive: 'her' };
+    
+    const companionPronouns = companionGender === 'boy' ? 
+        { subject: 'he', object: 'him', possessive: 'his' } : 
+        { subject: 'she', object: 'her', possessive: 'her' };
+
     // Build a detailed prompt for AI image generation
     const characterDescription = `${adjective.replace(/_/g, ' ')} ${noun}`;
     const companionDescription = companionType.replace(/_/g, ' ');
@@ -462,17 +468,17 @@ function generateAIPrompt() {
     // Check predefined types first
     if (nouns[noun]) {
         if (noun === 'wizard') {
-            styleDetails = 'magical, mystical, with glowing magical effects';
+            styleDetails = `magical, mystical, with glowing magical effects. As ${characterPronouns.subject} casts spells`;
         } else if (noun === 'superhero') {
-            styleDetails = 'dynamic pose, heroic lighting, comic book style';
+            styleDetails = `dynamic pose, heroic lighting, comic book style. As ${characterPronouns.subject} strikes a heroic pose`;
         } else if (noun === 'robot') {
-            styleDetails = 'metallic textures, glowing elements, sci-fi style';
+            styleDetails = `metallic textures, glowing elements, sci-fi style. As ${characterPronouns.subject} processes data`;
         } else if (noun === 'pirate') {
-            styleDetails = 'swashbuckling adventure style, dramatic lighting';
+            styleDetails = `swashbuckling adventure style, dramatic lighting. As ${characterPronouns.subject} searches for treasure`;
         } else if (noun === 'princess') {
-            styleDetails = 'royal attire, elegant pose, fantasy style';
+            styleDetails = `royal attire, elegant pose, fantasy style. As ${characterPronouns.subject} rules with grace`;
         } else if (noun === 'astronaut') {
-            styleDetails = 'space background, futuristic suit, sci-fi elements';
+            styleDetails = `space background, futuristic suit, sci-fi elements. As ${characterPronouns.subject} explores the cosmos`;
         }
     } else {
         // Generate style details based on adjective and noun combination
@@ -493,36 +499,36 @@ function generateAIPrompt() {
             `${adjective.toLowerCase()} and distinctive`;
 
         // Create style details for custom character types
-        styleDetails = `${mood} pose, with details that highlight their unique ${noun.toLowerCase()} nature`;
+        styleDetails = `${mood} pose, with details that highlight ${characterPronouns.possessive} unique ${noun.toLowerCase()} nature`;
     }
 
-    // Add companion-specific details
+    // Add companion-specific details with gender
     let companionStyle = '';
     if (companions[companionType]) {
-        // Use predefined companion descriptions
+        // Use predefined companion descriptions with gender
         if (companionType.includes('dragon')) {
-            companionStyle = 'with scales that shimmer and magical energy swirling around them';
+            companionStyle = `with scales that shimmer and magical energy swirling around ${companionPronouns.object}`;
         } else if (companionType.includes('ghost')) {
-            companionStyle = 'semi-transparent and glowing with a gentle, friendly aura';
+            companionStyle = `semi-transparent and glowing with a gentle, friendly aura as ${companionPronouns.subject} floats`;
         } else if (companionType.includes('robot')) {
-            companionStyle = 'with shiny metal parts and blinking lights';
+            companionStyle = `with shiny metal parts and blinking lights as ${companionPronouns.subject} processes data`;
         } else if (companionType.includes('monster')) {
-            companionStyle = 'looking fierce but friendly, with a big heart';
+            companionStyle = `looking fierce but friendly, with a big heart as ${companionPronouns.subject} protects ${characterPronouns.possessive} friend`;
         } else if (companionType.includes('alien')) {
-            companionStyle = 'with unique otherworldly features that seem both exotic and endearing';
+            companionStyle = `with unique otherworldly features that seem both exotic and endearing as ${companionPronouns.subject} observes Earth customs`;
         }
     } else {
-        // Generate companion style for custom types
-        companionStyle = `showing their unique characteristics as a ${companionDescription.toLowerCase()}`;
+        // Generate companion style for custom types with gender
+        companionStyle = `showing ${companionPronouns.possessive} unique characteristics as a ${companionDescription.toLowerCase()}`;
     }
 
     // Include background story in the scene description
     const backgroundContext = background && background !== 'Click generate to create a background story...' ?
-        `The scene reflects their background: ${background}` :
+        `The scene reflects their shared adventure: ${background}` :
         '';
 
-    // Construct the prompt with all details
-    const prompt = `A vibrant, detailed illustration of ${name}, a ${characterDescription}, ${styleDetails}. They are accompanied by their faithful companion ${companionName}, a ${companionDescription} ${companionStyle}. ${backgroundContext} Cute and child-friendly art style, suitable for a children's adventure game. Digital art, colorful, well-lit, playful atmosphere.`;
+    // Construct the prompt with all details including gender context
+    const prompt = `A vibrant, detailed illustration of ${name}, a ${characterDescription} (${characterGender}), ${styleDetails}. ${characterPronouns.subject.charAt(0).toUpperCase() + characterPronouns.subject.slice(1)} is accompanied by ${characterPronouns.possessive} faithful companion ${companionName}, a ${companionDescription} (${companionGender}) ${companionStyle}. ${backgroundContext} Cute and child-friendly art style, suitable for a children's adventure game. Digital art, colorful, well-lit, playful atmosphere.`;
 
     return prompt;
 }
